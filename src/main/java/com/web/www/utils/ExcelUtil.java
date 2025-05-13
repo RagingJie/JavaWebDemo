@@ -103,7 +103,10 @@ public class ExcelUtil {
 
         // 结束时间
         Long endTime = System.currentTimeMillis();
-        log.info("导出excel耗时：{}ms", (endTime - startTime));
+        Long costTime = endTime - startTime;
+        // 设置导出耗时
+        CommonContextUtil.set(costTime.intValue());
+        log.info("导出excel耗时：{}ms", costTime);
     }
 
     /**

@@ -4,6 +4,7 @@ import com.web.www.commom.model.Result;
 import com.web.www.pojo.KdUser;
 import com.web.www.service.KdUserService;
 
+import com.web.www.utils.CommonContextUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -119,6 +120,6 @@ public class KdUserController {
     public Result exportKdUsers() {
         log.info("导出所有user信息");
         kdUserService.exportKdUsers();
-        return Result.success("导出成功");
+        return Result.success("导出成功",String.format("累计耗时：%s ms", CommonContextUtil.get()));
     }
 }
