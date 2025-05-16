@@ -20,7 +20,7 @@ public enum ResultStatusEnum {
     GATEWAY_TIMEOUT(504, "网关超时"),
     HTTP_VERSION_NOT_SUPPORTED(505, "HTTP版本不受支持"),
     EXPORT_ERROR(50001, "导出错误"),
-    IMPORT_ERROR(50002, "导人错误"),
+    IMPORT_ERROR(50002, "导入错误"),
     FILE_NOT_FOUND(50003, "文件不存在或该文件正被其他程序占用"),
     UNKNOWN_ERROR(600, "未知错误");
     private Integer code;
