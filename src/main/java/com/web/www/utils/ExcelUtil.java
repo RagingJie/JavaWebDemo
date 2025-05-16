@@ -11,10 +11,7 @@ import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.*;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
@@ -33,8 +30,6 @@ public class ExcelUtil {
      * @param exportData 导出数据,一个表示一个sheet的表单数据
      */
     public static void exportData(String fileName, String filePath, List<String> sheetNames, List<Map<String, Object>>... exportData) {
-        // 开始时间
-        Long startTime = System.currentTimeMillis();
         // 创建工作簿
         SXSSFWorkbook workbook = new SXSSFWorkbook(100);
         // 文件名，为空时，默认为时间戳命名
@@ -100,13 +95,6 @@ public class ExcelUtil {
                 throw new BusinessRuntimeException(ResultStatusEnum.EXPORT_ERROR.getCode(), ResultStatusEnum.EXPORT_ERROR.getMessage(), e.getMessage());
             }
         }
-
-        // 结束时间
-        Long endTime = System.currentTimeMillis();
-        Long costTime = endTime - startTime;
-        // 设置导出耗时
-        CommonContextUtil.set(costTime.intValue());
-        log.info("导出excel耗时：{}ms", costTime);
     }
 
     /**
@@ -201,8 +189,69 @@ public class ExcelUtil {
         return cellStyle;
     }
 
+    /**
+     * 导入数据 -- 读取数据信息
+     * <p>
+     * 注：
+     * 只读取sheet1的数据信息
+     *
+     * @param is 文件流
+     */
+    public static void readData(InputStream is) throws IOException {
+        System.out.println("导入---读取数据信息");
+        // 语法要求：try-with-resource优势：
+        // 1. try-with-resource语法要求：资源类（如FileInputStream）必须实现AutoCloseable或Closeable接口，FileInputStream已实现Closeable接口，因此支持该语法
+        // 2. try-with-resource语法要求：try-with-resource语句会自动调用close()方法，因此不需要try-catch-finally语句
+        try (XSSFWorkbook workbook = new XSSFWorkbook(is)) {
+            // 获取sheet1
+            Sheet sheet = workbook.getSheetAt(0);
+            // 获取最后一行行号
+            int lastRowNum = sheet.getLastRowNum();
+            // 遍历每一行
+            for (int i = 0; i <= lastRowNum; i++) {
+                // 获取每一行
+                Row row = sheet.getRow(i);
+                // 获取最后一列列号
+                short lastCellNum = row.getLastCellNum();
+                for (int j = 0; j < lastCellNum; j++) {
+                    // 获取每一列
+                    Cell cell = row.getCell(j);
+                    if (cell == null) {
 
-    public static void importData() {
-        System.out.println("导入");
+                    } else {
+                        String cellValue = getCellValue(cell);
+                    }
+                }
+            }
+        }
+    }
+
+    public static String getCellValue(Cell cell) {
+        if (cell == null) {
+            return "";
+        }
+        CellType cellType = cell.getCellType();
+        if (cellType.equals(CellType.BLANK) || cellType.equals(CellType._NONE)) {
+            return "";
+        } else if (cellType.equals(CellType.STRING)) {// 字符串
+            return String.valueOf(cell.getStringCellValue());
+        } else if (cellType.equals(CellType.NUMERIC)) {// 数字
+            cell.setCellType(CellType.STRING);
+            return String.valueOf(cell.getStringCellValue());
+        } else if (cellType.equals(CellType.BOOLEAN)) {// Boolean
+            return String.valueOf(cell.getBooleanCellValue());
+        } else if (cellType.equals(CellType.ERROR)) {// 故障
+            return String.valueOf(cell.getErrorCellValue());
+        } else if (cellType.equals(CellType.FORMULA)) {// 公式
+            String value = "";
+            try {
+                value = String.valueOf(cell.getNumericCellValue());
+            } catch (IllegalStateException e) {
+                value = String.valueOf(cell.getRichStringCellValue());
+            }
+            return value;
+        } else {
+            return "";
+        }
     }
 }
