@@ -1,4 +1,4 @@
-package com.web.www.pojo;
+package com.web.www.model.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -16,8 +16,8 @@ import javax.validation.constraints.Pattern;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("kd_user")
-public class KdUser {
+@TableName("kd_sys_user")
+public class KdSysUser {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
