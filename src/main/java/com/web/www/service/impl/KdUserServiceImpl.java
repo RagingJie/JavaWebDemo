@@ -6,12 +6,14 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.web.www.commom.enums.ResultStatusEnum;
 import com.web.www.exception.BusinessRuntimeException;
 import com.web.www.mapper.KdUserMapper;
-import com.web.www.pojo.KdUser;
+import com.web.www.model.pojo.KdSysUser;
 import com.web.www.service.KdUserService;
 import com.web.www.utils.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -21,37 +23,37 @@ public class KdUserServiceImpl implements KdUserService {
     private KdUserMapper kdUserMapper;
 
     @Override
-    public KdUser getKdUserById(Integer id) {
+    public KdSysUser getKdUserById(Integer id) {
         return kdUserMapper.selectById(id);
     }
 
     @Override
-    public KdUser getKdUserByName(String name) {
-        LambdaQueryWrapper<KdUser> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(KdUser::getName, name);
+    public KdSysUser getKdUserByName(String name) {
+        LambdaQueryWrapper<KdSysUser> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(KdSysUser::getName, name);
         return kdUserMapper.selectOne(lambdaQueryWrapper);
     }
 
     @Override
-    public KdUser getKdUserByPhone(String phone) {
-        LambdaQueryWrapper<KdUser> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(KdUser::getPhone, phone);
+    public KdSysUser getKdUserByPhone(String phone) {
+        LambdaQueryWrapper<KdSysUser> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(KdSysUser::getPhone, phone);
         return kdUserMapper.selectOne(lambdaQueryWrapper);
     }
 
     @Override
-    public List<KdUser> getAllKdUser() {
+    public List<KdSysUser> getAllKdUser() {
         return kdUserMapper.selectList(new LambdaQueryWrapper<>());
     }
 
     @Override
-    public void addKdUser(KdUser kdUser) {
-        if (StrUtil.isNotBlank(kdUser.getPhone())) {
-            if (BeanUtil.isNotEmpty(getKdUserByPhone(kdUser.getPhone()))) {
-                throw new BusinessRuntimeException(ResultStatusEnum.CONFLICT.getCode(), ResultStatusEnum.CONFLICT.getMessage(), "手机号为【" + kdUser.getPhone() + "】的用户已存在");
+    public void addKdUser(KdSysUser kdSysUser) {
+        if (StrUtil.isNotBlank(kdSysUser.getPhone())) {
+            if (BeanUtil.isNotEmpty(getKdUserByPhone(kdSysUser.getPhone()))) {
+                throw new BusinessRuntimeException(ResultStatusEnum.CONFLICT.getCode(), ResultStatusEnum.CONFLICT.getMessage(), "手机号为【" + kdSysUser.getPhone() + "】的用户已存在");
             }
         }
-        kdUserMapper.insert(kdUser);
+        kdUserMapper.insert(kdSysUser);
     }
 
     @Override
@@ -63,19 +65,19 @@ public class KdUserServiceImpl implements KdUserService {
     }
 
     @Override
-    public void updateKdUser(KdUser kdUser) {
-        if (StrUtil.isNotBlank(kdUser.getPhone())) {
-            KdUser user = getKdUserByPhone(kdUser.getPhone());
-            if (BeanUtil.isNotEmpty(user) && !kdUser.getId().equals(user.getId())) {
-                throw new BusinessRuntimeException(ResultStatusEnum.CONFLICT.getCode(), ResultStatusEnum.CONFLICT.getMessage(), "手机号为【" + kdUser.getPhone() + "】的用户已存在");
+    public void updateKdUser(KdSysUser kdSysUser) {
+        if (StrUtil.isNotBlank(kdSysUser.getPhone())) {
+            KdSysUser user = getKdUserByPhone(kdSysUser.getPhone());
+            if (BeanUtil.isNotEmpty(user) && !kdSysUser.getId().equals(user.getId())) {
+                throw new BusinessRuntimeException(ResultStatusEnum.CONFLICT.getCode(), ResultStatusEnum.CONFLICT.getMessage(), "手机号为【" + kdSysUser.getPhone() + "】的用户已存在");
             }
         }
-        kdUserMapper.updateById(kdUser);
+        kdUserMapper.updateById(kdSysUser);
     }
 
     @Override
     public void exportKdUsers() {
-        List<KdUser> allKdUser = getAllKdUser();
+        List<KdSysUser> allKdSysUser = getAllKdUser();
         ArrayList<Map<String, Object>> exportData = new ArrayList<>();
         // 设置表头数据
         Map<String, Object> titleMap = new LinkedHashMap<>();
@@ -87,18 +89,27 @@ public class KdUserServiceImpl implements KdUserService {
         exportData.add(titleMap);
 
         // 设置表单内容数据
-        for (KdUser kdUser : allKdUser) {
+        for (KdSysUser kdSysUser : allKdSysUser) {
             Map<String, Object> contentMap = new LinkedHashMap<>();
-            contentMap.put("name", kdUser.getName());
-            contentMap.put("sex", kdUser.getSex());
-            contentMap.put("age", kdUser.getAge());
-            contentMap.put("phone", kdUser.getPhone());
-            contentMap.put("address", kdUser.getAddress());
+            contentMap.put("name", kdSysUser.getName());
+            contentMap.put("sex", kdSysUser.getSex());
+            contentMap.put("age", kdSysUser.getAge());
+            contentMap.put("phone", kdSysUser.getPhone());
+            contentMap.put("address", kdSysUser.getAddress());
             exportData.add(contentMap);
         }
 
         String fileName = "用户信息表";
         String filePath = "C:\\Users\\20459\\Desktop";
-        ExcelUtil.exportData(fileName, filePath, Arrays.asList(fileName,"",""), exportData, null, exportData);
+        ExcelUtil.exportData(fileName, filePath, Arrays.asList(fileName, "", ""), exportData, null, exportData);
+    }
+
+    @Override
+    public void importKdUsers(MultipartFile file) {
+        try {
+            ExcelUtil.readData(file.getInputStream());
+        } catch (IOException e) {
+            throw new BusinessRuntimeException(ResultStatusEnum.IMPORT_ERROR.getCode(), ResultStatusEnum.IMPORT_ERROR.getMessage(), e.getMessage());
+        }
     }
 }

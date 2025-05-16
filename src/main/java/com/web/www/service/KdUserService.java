@@ -1,25 +1,27 @@
 package com.web.www.service;
 
-import com.web.www.pojo.KdUser;
+import com.web.www.model.pojo.KdSysUser;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface KdUserService {
 
-    KdUser getKdUserById(Integer id);
+    KdSysUser getKdUserById(Integer id);
 
-    KdUser getKdUserByName(String name);
+    KdSysUser getKdUserByName(String name);
 
-    KdUser getKdUserByPhone(String phone);
+    KdSysUser getKdUserByPhone(String phone);
 
-    List<KdUser> getAllKdUser();
+    List<KdSysUser> getAllKdUser();
 
-    void addKdUser(KdUser kdUser);
+    void addKdUser(KdSysUser kdSysUser);
 
     void deleteKdUser(Integer id);
 
-    void updateKdUser(KdUser kdUser);
+    void updateKdUser(KdSysUser kdSysUser);
 
     void exportKdUsers();
 
+    void importKdUsers(MultipartFile file);
 }
