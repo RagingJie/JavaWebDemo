@@ -23,6 +23,13 @@
         <lombok.version>1.18.24</lombok.version>
     </properties>
     <dependencies>
+        <!-- Sa-Token 权限认证，在线文档：https://sa-token.cc -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot-starter</artifactId>
+            <version>1.42.0</version>
+        </dependency>
+
         <!-- Hutool工具包 -->
         <dependency>
             <groupId>cn.hutool</groupId>
