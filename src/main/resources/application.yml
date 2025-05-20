@@ -28,8 +28,10 @@ mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   global-config:
     db-config:
-      logic-delete-value: y
-      logic-not-delete-value: n
+      logic-delete-field: is_deleted # 全局逻辑删除字段名
+      logic-delete-value: y # 逻辑已删除值
+      logic-not-delete-value: n # 逻辑未删除值
+
 
 ############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
 sa-token:
