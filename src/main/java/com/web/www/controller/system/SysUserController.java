@@ -1,9 +1,8 @@
 package com.web.www.controller.system;
 
 import cn.dev33.satoken.stp.StpUtil;
-import cn.dev33.satoken.util.SaResult;
 import com.web.www.commom.model.Result;
-import com.web.www.model.vo.reqVo.KdSysUserLoginReqVo;
+import com.web.www.model.vo.reqVo.SysUserLoginReqVo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -13,7 +12,7 @@ import javax.validation.Valid;
 @CrossOrigin
 @RestController
 @RequestMapping(path = "/sys/user")
-public class KdSysUserController {
+public class SysUserController {
 
     /**
      * 登录
@@ -22,7 +21,7 @@ public class KdSysUserController {
      * @return
      */
     @PostMapping(path = "/login")
-    public Result login(@RequestBody @Valid KdSysUserLoginReqVo user) {
+    public Result login(@RequestBody @Valid SysUserLoginReqVo user) {
         if ("admin".equals(user.getUsername()) && "admin".equals(user.getPassword())) {
             StpUtil.login("1001");
         } else {
