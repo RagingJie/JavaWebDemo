@@ -11,7 +11,7 @@
  Target Server Version : 50717 (5.7.17-log)
  File Encoding         : 65001
 
- Date: 20/05/2025 14:15:37
+ Date: 20/05/2025 16:14:09
 */
 
 SET NAMES utf8mb4;
@@ -35,10 +35,6 @@ CREATE TABLE `sys_login_info_log`  (
   INDEX `idx_sys_login_info_s`(`status`) USING BTREE,
   INDEX `idx_sys_login_info_lt`(`login_time`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 117 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of sys_login_info_log
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -69,10 +65,6 @@ CREATE TABLE `sys_menu`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 2004 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单权限表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
--- Records of sys_menu
--- ----------------------------
-
--- ----------------------------
 -- Table structure for sys_role
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role`;
@@ -95,10 +87,6 @@ CREATE TABLE `sys_role`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
--- Records of sys_role
--- ----------------------------
-
--- ----------------------------
 -- Table structure for sys_role_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_menu`;
@@ -107,10 +95,6 @@ CREATE TABLE `sys_role_menu`  (
   `menu_id` bigint(20) NOT NULL COMMENT '菜单ID',
   PRIMARY KEY (`role_id`, `menu_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色和菜单关联表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of sys_role_menu
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -137,12 +121,9 @@ CREATE TABLE `sys_user`  (
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   `birthday` datetime NULL DEFAULT NULL COMMENT '生日',
   `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '地址',
+  `salt` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '盐值，使用uuid',
   PRIMARY KEY (`user_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of sys_user
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -153,9 +134,5 @@ CREATE TABLE `sys_user_role`  (
   `role_id` bigint(20) NOT NULL COMMENT '角色ID',
   PRIMARY KEY (`user_id`, `role_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户和角色关联表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of sys_user_role
--- ----------------------------
 
 SET FOREIGN_KEY_CHECKS = 1;
