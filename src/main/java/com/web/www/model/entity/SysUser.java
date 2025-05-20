@@ -1,9 +1,6 @@
 package com.web.www.model.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -74,6 +71,7 @@ public class SysUser implements Serializable {
     private String address;
 
     // 删除标志（n代表存在 y代表删除）
+    @TableLogic
     @TableField(value = "is_deleted")
     private String isDeleted;
 
