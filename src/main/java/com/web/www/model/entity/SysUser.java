@@ -1,9 +1,13 @@
 package com.web.www.model.entity;
 
+import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.asymmetric.KeyType;
+import cn.hutool.crypto.asymmetric.RSA;
+import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.web.www.commom.property.RsaProperty;
 import lombok.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -26,8 +30,8 @@ public class SysUser implements Serializable {
 
     private static final long serialVersionUID = 324678328942309L;
 
-    // 密码加密器
-    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    // 使用hutool的rsa算法
+    private static final RSA rsa = SecureUtil.rsa(RsaProperty.privateKey, RsaProperty.publicKey);
 
     // 主键，用户id，使用雪花算法自增主键
     @TableId(value = "user_id", type = IdType.ASSIGN_ID)
@@ -39,7 +43,7 @@ public class SysUser implements Serializable {
 
     // 用户名
     @TableField(value = "user_name")
-    private String userName;
+    private String username;
 
     // 用户类型（00系统用户）
     @TableField(value = "user_type")
@@ -114,14 +118,19 @@ public class SysUser implements Serializable {
     @TableField(value = "remark")
     private String remark;
 
+    // 盐值，使用uuid
+    @TableField(value = "salt")
+    private String salt;
+
     /**
      * 密码加密
      *
      * @param password 密码
+     * @param salt     盐值
      * @return 加密后的密码
      */
-    public String encryptPassword(String password) {
-        return encoder.encode(password);
+    public static String encryptPassword(String password, String salt) {
+        return DigestUtil.sha256Hex(salt + password + salt);
     }
 
     /**
@@ -129,10 +138,30 @@ public class SysUser implements Serializable {
      *
      * @param password        密码
      * @param encodedPassword 加密后的密码
+     * @param salt            盐值
      * @return 校验结果
      */
-    public Boolean checkPassword(String password, String encodedPassword) {
-        return encoder.matches(password, encodedPassword);
+    public static Boolean checkPassword(String password, String salt, String encodedPassword) {
+        return DigestUtil.sha256Hex(salt + password + salt).equals(encodedPassword);
     }
 
+    /**
+     * 手机号加密
+     *
+     * @param phone 手机号
+     * @return 加密后的手机号
+     */
+    public static String encryptPhone(String phone) {
+        return rsa.encryptBase64(phone, KeyType.PublicKey);
+    }
+
+    /**
+     * 手机号解密
+     *
+     * @param phone 手机号
+     * @return 解密后的手机号
+     */
+    public static String decryptPhone(String phone) {
+        return rsa.decryptStr(phone, KeyType.PrivateKey);
+    }
 }
