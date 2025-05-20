@@ -23,11 +23,6 @@
         <lombok.version>1.18.24</lombok.version>
     </properties>
     <dependencies>
-        <!-- Spring Security -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
         <!-- fastjson2 -->
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
