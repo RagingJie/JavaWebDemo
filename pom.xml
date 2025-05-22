@@ -40,6 +40,12 @@
             <artifactId>sa-token-redis-template</artifactId>
             <version>1.43.0</version>
         </dependency>
+        <!-- Sa-Token 整合 SpringAOP 实现注解鉴权；可以在任意层级使用注解鉴权，解除只能在controller层使用注解鉴权的限制-->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-aop</artifactId>
+            <version>1.43.0</version>
+        </dependency>
         <!-- 提供 Redis 连接池 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
