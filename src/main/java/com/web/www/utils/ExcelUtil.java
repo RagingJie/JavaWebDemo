@@ -1,7 +1,7 @@
 package com.web.www.utils;
 
 import cn.hutool.core.util.StrUtil;
-import com.web.www.commom.enums.ResultStatusEnum;
+import com.web.www.commom.enums.SysCommonStatusEnum;
 import com.web.www.exception.BusinessRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
@@ -36,11 +36,11 @@ public class ExcelUtil {
         fileName = StrUtil.isBlank(fileName) ? "export_" + System.currentTimeMillis() : fileName;
         // 判断导出数据是否为空
         if (exportData == null) {
-            throw new BusinessRuntimeException(ResultStatusEnum.EXPORT_ERROR.getCode(), ResultStatusEnum.EXPORT_ERROR.getMessage(), "导出数据为空");
+            throw new BusinessRuntimeException(SysCommonStatusEnum.EXPORT_ERROR.getCode(), SysCommonStatusEnum.EXPORT_ERROR.getMessage(), "导出数据为空");
         }
         // 判断导出文件路径是否为空
         if (StrUtil.isBlank(filePath)) {
-            throw new BusinessRuntimeException(ResultStatusEnum.EXPORT_ERROR.getCode(), ResultStatusEnum.EXPORT_ERROR.getMessage(), "导出文件路径为空");
+            throw new BusinessRuntimeException(SysCommonStatusEnum.EXPORT_ERROR.getCode(), SysCommonStatusEnum.EXPORT_ERROR.getMessage(), "导出文件路径为空");
         }
         // sheet名称，为空时，默认为sheet1
         if (sheetNames == null) {
@@ -85,14 +85,14 @@ public class ExcelUtil {
         try (FileOutputStream fos = new FileOutputStream(file)) {
             workbook.write(fos);
         } catch (FileNotFoundException e) {
-            throw new BusinessRuntimeException(ResultStatusEnum.FILE_NOT_FOUND.getCode(), ResultStatusEnum.FILE_NOT_FOUND.getMessage(), e.getMessage());
+            throw new BusinessRuntimeException(SysCommonStatusEnum.FILE_NOT_FOUND.getCode(), SysCommonStatusEnum.FILE_NOT_FOUND.getMessage(), e.getMessage());
         } catch (IOException e) {
-            throw new BusinessRuntimeException(ResultStatusEnum.EXPORT_ERROR.getCode(), ResultStatusEnum.EXPORT_ERROR.getMessage(), e.getMessage());
+            throw new BusinessRuntimeException(SysCommonStatusEnum.EXPORT_ERROR.getCode(), SysCommonStatusEnum.EXPORT_ERROR.getMessage(), e.getMessage());
         } finally {
             try {
                 workbook.close();
             } catch (IOException e) {
-                throw new BusinessRuntimeException(ResultStatusEnum.EXPORT_ERROR.getCode(), ResultStatusEnum.EXPORT_ERROR.getMessage(), e.getMessage());
+                throw new BusinessRuntimeException(SysCommonStatusEnum.EXPORT_ERROR.getCode(), SysCommonStatusEnum.EXPORT_ERROR.getMessage(), e.getMessage());
             }
         }
     }

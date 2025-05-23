@@ -1,6 +1,6 @@
 package com.web.www.exception;
 
-import com.web.www.commom.enums.ResultStatusEnum;
+import com.web.www.commom.enums.SysCommonStatusEnum;
 import com.web.www.commom.model.Result;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
@@ -25,7 +25,7 @@ public class GlobalException {
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
     public Result handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         e.printStackTrace();
-        return Result.fail(ResultStatusEnum.NOT_SUPPORTED.getCode(), ResultStatusEnum.NOT_SUPPORTED.getMessage(), e.getMessage());
+        return Result.fail(SysCommonStatusEnum.NOT_SUPPORTED.getCode(), SysCommonStatusEnum.NOT_SUPPORTED.getMessage(), e.getMessage());
     }
 
     /**
@@ -34,7 +34,7 @@ public class GlobalException {
     @ExceptionHandler(value = HttpMessageNotReadableException.class)
     public Result handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         e.printStackTrace();
-        return Result.fail(ResultStatusEnum.NOT_PARSE_JSON_REQUEST_BODY.getCode(), ResultStatusEnum.NOT_PARSE_JSON_REQUEST_BODY.getMessage(), e.getMessage());
+        return Result.fail(SysCommonStatusEnum.NOT_PARSE_JSON_REQUEST_BODY.getCode(), SysCommonStatusEnum.NOT_PARSE_JSON_REQUEST_BODY.getMessage(), e.getMessage());
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
@@ -45,7 +45,7 @@ public class GlobalException {
             data.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
         e.printStackTrace();
-        return Result.fail(ResultStatusEnum.DATA_CHECK_FAIL.getCode(), ResultStatusEnum.DATA_CHECK_FAIL.getMessage(), data);
+        return Result.fail(SysCommonStatusEnum.DATA_CHECK_FAIL.getCode(), SysCommonStatusEnum.DATA_CHECK_FAIL.getMessage(), data);
     }
 
 
@@ -65,7 +65,7 @@ public class GlobalException {
     @ExceptionHandler(value = Exception.class)
     public Result handleException(Exception e) {
         e.printStackTrace();
-        return Result.fail(ResultStatusEnum.UNKNOWN_ERROR.getCode(), ResultStatusEnum.UNKNOWN_ERROR.getMessage(), e.getMessage());
+        return Result.fail(SysCommonStatusEnum.UNKNOWN_ERROR.getCode(), SysCommonStatusEnum.UNKNOWN_ERROR.getMessage(), e.getMessage());
     }
 
 }

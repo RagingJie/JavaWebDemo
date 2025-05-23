@@ -1,6 +1,9 @@
 package com.web.www.commom.enums;
 
-public enum ResultStatusEnum {
+/**
+ * 系统通用状态枚举
+ */
+public enum SysCommonStatusEnum {
 
     SUCCESS(200, "成功"),
     FAIL(500, "失败"),
@@ -23,10 +26,10 @@ public enum ResultStatusEnum {
     IMPORT_ERROR(50002, "导入错误"),
     FILE_NOT_FOUND(50003, "文件不存在或该文件正被其他程序占用"),
     UNKNOWN_ERROR(600, "未知错误");
-    private Integer code;
-    private String message;
+    private final Integer code;
+    private final String message;
 
-    ResultStatusEnum(int code, String message) {
+    SysCommonStatusEnum(int code, String message) {
         this.code = code;
         this.message = message;
     }
