@@ -26,6 +26,10 @@ public class Result {
         return new Result(ResultStatusEnum.SUCCESS.getCode(), message, data);
     }
 
+    public static Result success(Integer code, String message) {
+        return new Result(ResultStatusEnum.SUCCESS.getCode(), message, null);
+    }
+
     public static Result success(String message) {
         return new Result(ResultStatusEnum.SUCCESS.getCode(), message, null);
     }
@@ -40,6 +44,10 @@ public class Result {
 
     public static Result fail(String message, Object data) {
         return new Result(ResultStatusEnum.FAIL.getCode(), message, data);
+    }
+
+    public static Result fail(Integer code, String message) {
+        return new Result(ResultStatusEnum.FAIL.getCode(), message, null);
     }
 
     public static Result fail(String message) {
