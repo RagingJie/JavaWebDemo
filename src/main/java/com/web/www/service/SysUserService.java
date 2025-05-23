@@ -1,6 +1,8 @@
 package com.web.www.service;
 
+import com.web.www.commom.model.Result;
 import com.web.www.model.entity.SysUser;
+import com.web.www.model.vo.reqVo.SysUserLoginReqVo;
 
 import java.util.List;
 
@@ -45,5 +47,11 @@ public interface SysUserService {
      */
     Integer deleteByUserId(Long userId);
 
-
+    /**
+     * 用户登录
+     *
+     * @param user 用户信息
+     * @return 登录结果
+     */
+    Result login(SysUserLoginReqVo user);
 }

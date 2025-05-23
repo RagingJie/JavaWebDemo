@@ -1,5 +1,6 @@
 package com.web.www.model.entity;
 
+import cn.hutool.core.codec.Base64Encoder;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
@@ -125,28 +126,28 @@ public class SysUser implements Serializable {
     /**
      * 密码加密
      *
-     * @param password 密码
+     * @param password 用户输入的密码
      * @param salt     盐值
      * @return 加密后的密码
      */
     public static String encryptPassword(String password, String salt) {
-        return DigestUtil.sha256Hex(salt + password + salt);
+        return Base64Encoder.encode(DigestUtil.sha256Hex(salt + password + salt));
     }
 
     /**
      * 密码校验
      *
-     * @param password        密码
-     * @param encodedPassword 加密后的密码
+     * @param password        用户输入的密码
+     * @param encodedPassword 数据库中存储的加密后的密码
      * @param salt            盐值
      * @return 校验结果
      */
     public static Boolean checkPassword(String password, String salt, String encodedPassword) {
-        return DigestUtil.sha256Hex(salt + password + salt).equals(encodedPassword);
+        return encryptPassword(password, salt).equals(encodedPassword);
     }
 
     /**
-     * 手机号加密
+     * 手机号加密，RSA加密
      *
      * @param phone 手机号
      * @return 加密后的手机号
@@ -156,7 +157,7 @@ public class SysUser implements Serializable {
     }
 
     /**
-     * 手机号解密
+     * 手机号解密，RSA加密
      *
      * @param phone 手机号
      * @return 解密后的手机号

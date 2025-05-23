@@ -16,7 +16,7 @@ public class SysUserLoginReqVo {
 
     // 用户名
     @NotBlank(message = "用户名不能为空")
-    @Length(min = 6, max = 16, message = "用户名长度在6~16之间")
+    @Length(min = 5, max = 16, message = "用户名长度在6~16之间")
     private String username;
 
     @NotBlank(message = "密码不能为空")
