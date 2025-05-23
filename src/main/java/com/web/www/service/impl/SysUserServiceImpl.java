@@ -3,6 +3,7 @@ package com.web.www.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.web.www.commom.constants.SysConstants;
+import com.web.www.commom.enums.SysCommonStatusEnum;
 import com.web.www.commom.enums.SysUserStatusEnum;
 import com.web.www.commom.model.Result;
 import com.web.www.mapper.SysUserMapper;
@@ -70,7 +71,7 @@ public class SysUserServiceImpl implements SysUserService {
         // 密码正确并登录
         StpUtil.login(sysUser.getUserId());
         // 返回token
-        return Result.success(StpUtil.getTokenValue());
+        return Result.success(SysCommonStatusEnum.SUCCESS.getCode(), SysCommonStatusEnum.SUCCESS.getMessage(), StpUtil.getTokenValue());
     }
 
 }
