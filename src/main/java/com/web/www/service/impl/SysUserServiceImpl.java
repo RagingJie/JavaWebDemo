@@ -74,4 +74,14 @@ public class SysUserServiceImpl implements SysUserService {
         return Result.success(SysCommonStatusEnum.SUCCESS.getCode(), SysCommonStatusEnum.SUCCESS.getMessage(), StpUtil.getTokenValue());
     }
 
+    @Override
+    public void logout(String userId) {
+        StpUtil.logout(userId);
+    }
+
+    @Override
+    public void kickOut(String userId) {
+        StpUtil.kickout(userId);
+    }
+
 }

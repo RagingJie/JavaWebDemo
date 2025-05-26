@@ -54,4 +54,22 @@ public interface SysUserService {
      * @return 登录结果
      */
     Result login(SysUserLoginReqVo user);
+
+    /**
+     * 用户登出---> 强制注销
+     * 注：
+     * 强制注销等价于对方主动调用了注销方法，再次访问会提示：Token无效。
+     *
+     * @param userId 用户id
+     */
+    void logout(String userId);
+
+    /**
+     * 用户登出---> 踢出
+     * 注：
+     * 踢人下线不会清除Token信息，而是将其打上特定标记，再次访问会提示：Token已被踢下线。
+     *
+     * @param userId 用户id
+     */
+    void kickOut(String userId);
 }
