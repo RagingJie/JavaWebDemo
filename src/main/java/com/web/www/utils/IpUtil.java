@@ -1,8 +1,13 @@
 package com.web.www.utils;
 
+import cn.hutool.http.HttpUtil;
+import com.alibaba.fastjson2.JSONObject;
+import com.web.www.model.dto.IpAddressDto;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
+
+import static cn.hutool.poi.excel.sax.AttributeName.s;
 
 /**
  * Ip工具类
@@ -37,6 +42,18 @@ public class IpUtil {
             ip = request.getRemoteAddr();
         }
         return ip;
+    }
+
+    /**
+     * 获取IP地址信息
+     *
+     * @param ipAddress IP地址
+     * @return IP地址信息
+     */
+    public static IpAddressDto getIpLocation(String ipAddress) {
+        String apiUrl = "https://qifu-api.baidubce.com/ip/geo/v1/district?ip=" + ipAddress;
+        String result = HttpUtil.get(apiUrl);
+        return JSONObject.parseObject(JSONObject.parse(result).getString("data"), IpAddressDto.class);
     }
 
 }
