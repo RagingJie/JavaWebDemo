@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 @Service
 public class SysLoginInfoLogServiceImpl implements SysLoginInfoLogService {
@@ -62,6 +63,7 @@ public class SysLoginInfoLogServiceImpl implements SysLoginInfoLogService {
                 .os(os)
                 .status(SysConstants.SUCCESS)
                 .msg("登录成功")
+                .loginTime(new Date())
                 .build();
         saveLoginInfo(sysLoginInfoLog);
     }
