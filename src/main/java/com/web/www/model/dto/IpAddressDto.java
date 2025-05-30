@@ -14,10 +14,10 @@ public class IpAddressDto implements Serializable {
     private static final long serialVersionUID = -3892748923745L;
 
     // 大洲
-    private String continent;
+    private static String continent;
 
     // 国家
-    private String country;
+    private static String country;
 
     private String zipcode;
 
@@ -30,11 +30,31 @@ public class IpAddressDto implements Serializable {
     private String adcode;
 
     // 省份
-    private String prov;
+    private static String prov;
 
     // 城市
-    private String city;
+    private static String city;
 
     // 区县
-    private String district;
+    private static String district;
+
+    public static String toProvCityDistrictStr() {
+        return prov + city + district;
+    }
+
+    public static String toProvCityStr() {
+        return prov + city;
+    }
+
+    public static String toCountryProvCityDistrictStr() {
+        return country + prov + city + district;
+    }
+
+    public static String toCountryProvCityStr() {
+        return country + prov + city;
+    }
+
+    public static String toCountryProvStr() {
+        return country + prov;
+    }
 }
