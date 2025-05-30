@@ -16,5 +16,9 @@ public class SysConstants {
     public static final String DELETED = "y";
     // 未删除
     public static final String NOT_DELETED = "n";
+    // 成功
+    public static final Integer SUCCESS = 0;
+    // 失败
+    public static final Integer FAIL = 1;
 
 }
